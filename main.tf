@@ -24,6 +24,22 @@ module "vpc" {
 
 module "ec2"{
   source = "./ec2"
-  nome_ec2_publica = "ec2_public_tf"
+  
+  #VPC
+  vpc_id = module.vpc.id_vpc
+
+  #ECS Publica
+  nome_ec2_publica = "ec2_publica_tf"
   tipo_instancia_ec2_publica = "t2.micro"
+  subnet_publica_id = module.vpc.id_subnet_publica
+
+  #ECS Privada1
+  nome_ec2_privada1 = "ec2_privada1_tf"
+  tipo_instancia_ec2_privada1 = "t2.micro"
+  subnet_privada1_id = module.vpc.id_subnet_privada1
+
+  #ECS Privada2
+  nome_ec2_privada2 = "ec2_privada2_tf"
+  tipo_instancia_ec2_privada2 = "t2.micro"
+  subnet_privada2_id = module.vpc.id_subnet_privada2
 }
