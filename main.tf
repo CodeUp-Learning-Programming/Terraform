@@ -21,3 +21,9 @@ module "vpc" {
     nome_subnet_privada1 = "subnet_privada1_tf"
     nome_subnet_privada2 = "subnet_privada2_tf"
 }
+
+module "ec2"{
+  source = "./ec2"
+  nome_ec2_publica = "ec2_public_tf"
+  tipo_instancia_ec2_publica = "t2.micro"
+}
