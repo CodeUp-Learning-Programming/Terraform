@@ -14,7 +14,10 @@ provider "aws" {
 
 module "vpc" {
     source = "./vpc"
+
+    #Atribuindo valores as váriaveis que foram declaradas em ./vpc/variables
+    nome_vpc = "vpc_tf"
+    nome_subnet_publica = "subnet_publica_tf"
+    nome_subnet_privada1 = "subnet_privada1_tf"
+    nome_subnet_privada2 = "subnet_privada2_tf"
 }
-
-
-
