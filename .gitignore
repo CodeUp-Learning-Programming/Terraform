@@ -1,0 +1,21 @@
+# Arquivos de estado do Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Arquivos de log e cache do Terraform
+*.log
+plugins/
+
+# Arquivos de credenciais e chaves privadas
+*.pem
+*.ppk
+*.json
+*.key
+
+# Arquivos e diretórios gerados pelo sistema ou IDE
+.DS_Store
+.idea/
+*.vscode/
+*.swp
+terraform.exe
