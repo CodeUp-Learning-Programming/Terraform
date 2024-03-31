@@ -1,3 +1,5 @@
+#TODO: Organizar o codigo
+#TODO: Construir os shells scripts
 terraform {
   required_providers {
     aws = {
@@ -13,33 +15,72 @@ provider "aws" {
 }
 
 module "vpc" {
-    source = "./vpc"
+    source = "./network/vpc"
 
-    #Atribuindo valores as váriaveis que foram declaradas em ./vpc/variables
     nome_vpc = "vpc_tf"
-    nome_subnet_publica = "subnet_publica_tf"
-    nome_subnet_privada1 = "subnet_privada1_tf"
-    nome_subnet_privada2 = "subnet_privada2_tf"
+    mascara_vpc = "10.0.0.0/24"
+}
+
+module "acl"{
+  source = "./network/acl"
+  vpc_id = module.vpc.id_vpc
+  nome_acl_publica = "acl_publica_tf"
+  nome_acl_privada = "acl_privada_tf"
+  subnet_publica_id = module.subnet.subnet_publica_id
+  subnet_privada_id = module.subnet.subnet_privada1_id
+}
+
+module "internet_gateway"{
+  source = "./network/internet_gateway"
+  vpc_id = module.vpc.id_vpc
+  nome_igw = "minha_ig_tf"
+}
+
+module "route_table"{
+  source = "./network/route_table"
+  vpc_id = module.vpc.id_vpc
+  igw_id = module.internet_gateway.igw_id
+  subnet_publica_id = module.subnet.subnet_publica_id
+  subnet_privada1_id = module.subnet.subnet_privada1_id
+
+  nome_rt_publica = "rt_publica_tf"
+  nome_rt_privada = "rt_privada_tf"
+}
+
+module "nat_gateway"{
+  source       = "./network/nat_gateway"
+  subnet_publica_id = module.subnet.subnet_publica_id
+
+  nome_nat_gtw = "nat_01_tf"
+  nome_eip     = "eip-tf"
+  
+}
+
+module "subnet"{
+  source                = "./network/subnet"
+  vpc_id                = module.vpc.id_vpc
+
+  nome_subnet_publica   = "subnet_publica_tf"
+  nome_subnet_privada1  = "subnet_privada1_tf"
+  nome_subnet_privada2  = "subnet_privada2_tf"
 }
 
 module "ec2"{
-  source = "./ec2"
-  
-  #VPC
+  source = "./compute/ec2"
   vpc_id = module.vpc.id_vpc
 
   #ECS Publica
   nome_ec2_publica = "ec2_publica_tf"
   tipo_instancia_ec2_publica = "t2.micro"
-  subnet_publica_id = module.vpc.id_subnet_publica
+  subnet_publica_id = module.subnet.subnet_publica_id
 
   #ECS Privada1
   nome_ec2_privada1 = "ec2_privada1_tf"
   tipo_instancia_ec2_privada1 = "t2.micro"
-  subnet_privada1_id = module.vpc.id_subnet_privada1
+  subnet_privada1_id = module.subnet.subnet_privada1_id
 
   #ECS Privada2
   nome_ec2_privada2 = "ec2_privada2_tf"
   tipo_instancia_ec2_privada2 = "t2.micro"
-  subnet_privada2_id = module.vpc.id_subnet_privada2
+  subnet_privada2_id = module.subnet.subnet_privada2_id
 }

@@ -1,4 +1,3 @@
-#TODO: Adicionar o group security
 resource "aws_security_group" "grupo_seguranca_padrao_tf" {
   name        = "grupo_seguranca_padrao_tf"
   description = "Grupo de seguranca das EC2"
@@ -71,7 +70,6 @@ resource "aws_instance" "ec2_publica_tf" {
   }
 }
 
-#EC2 Privada1
 resource "aws_instance" "ec2_privada1_tf" {
   ami           = "ami-080e1f13689e07408"  
   instance_type = var.tipo_instancia_ec2_privada1
@@ -85,7 +83,6 @@ resource "aws_instance" "ec2_privada1_tf" {
   }
 }
 
-#ECS Privada2
 resource "aws_instance" "ec2_privada2_tf" {
   ami           = "ami-080e1f13689e07408"  
   instance_type = var.tipo_instancia_ec2_privada2

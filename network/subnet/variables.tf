@@ -1,5 +1,5 @@
-variable "nome_vpc" {
-  description = "Nome da VPC"
+variable "vpc_id" {
+  description = "ID da VPC"
 }
 
 variable "nome_subnet_publica" {
@@ -7,11 +7,9 @@ variable "nome_subnet_publica" {
 }
 
 variable "nome_subnet_privada1" {
-  description = "Nome da subnet privada1"
+  description = "Nome subnet privada1"
 }
-
 
 variable "nome_subnet_privada2" {
-  description = "Nome da subnet privada2"
+  description = "Nome subnet privada2"
 }
-
