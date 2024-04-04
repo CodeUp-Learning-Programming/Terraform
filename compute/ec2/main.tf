@@ -45,6 +45,8 @@ resource "aws_security_group" "grupo_seguranca_padrao_tf" {
   }
 }
 
+
+
 #EC2 Publica
 resource "aws_instance" "ec2_publica_tf" {
   ami           = "ami-080e1f13689e07408"  
@@ -54,8 +56,19 @@ resource "aws_instance" "ec2_publica_tf" {
   key_name = "myssh"
   associate_public_ip_address = true
 
+  # Transferir a chave privada para a instância EC2 pública
+  # Configurações da instância EC2...
+  #provisioner "file" {
+  #  source      = "/caminho/para/sua/chave.pem"
+  #  destination = "/caminho/na/instancia/onde/salvar/chave.pem"
+  #}
+
+  #provisioner "remote-exec" {
+  #  # Comandos para executar na instância EC2...
+  #}
+
   # Provisionador para executar comandos na instância EC2 remotamente
-  provisioner "remote-exec" {
+  /* provisioner "remote-exec" {
     # Comandos a serem executados na instância EC2
     inline = [file("./shell/ec2-publica.sh")]
 
@@ -66,16 +79,22 @@ resource "aws_instance" "ec2_publica_tf" {
       # Usuário SSH para conectar à instância (padrão: ec2-user para instâncias Amazon Linux)
       user        = "ubuntu"
       # Caminho para a chave privada usada para autenticação SSH
-      private_key = file("/home/eduardo/Documents/Eduardo/Faculdade/Codeup/Terraform/compute/ec2/myssh.pem")
+      private_key = file("./myssh.pem")
       # Endereço IP público da instância EC2
       host        = aws_instance.ec2_publica_tf.public_ip
     }
-  }
+  } */
 
   tags = {
     Name = var.nome_ec2_publica
   }
 }
+#Pegando o IP publico da máquina para rodar um script apos sua criação
+
+
+#Rodando um script na minha máquina
+
+
 
 resource "aws_instance" "ec2_privada1_tf" {
   ami           = "ami-080e1f13689e07408"  

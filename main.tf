@@ -84,3 +84,11 @@ module "ec2"{
   tipo_instancia_ec2_privada2 = "t2.micro"
   subnet_privada2_id = module.subnet.subnet_privada2_id
 }
+
+resource "null_resource" "run_script" {
+  depends_on = [module.ec2]
+
+  provisioner "local-exec" {
+    command = "bash ./shell/transferencia-chave-pem.sh ${module.ec2.instance_ip}"
+  }
+}
