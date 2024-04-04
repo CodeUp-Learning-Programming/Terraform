@@ -12,6 +12,13 @@ resource "aws_security_group" "grupo_seguranca_padrao_tf" {
   }
 
   ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Acesso HTTP de qualquer lugar
+  }
+
+  ingress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
@@ -59,7 +66,7 @@ resource "aws_instance" "ec2_publica_tf" {
       # Usuário SSH para conectar à instância (padrão: ec2-user para instâncias Amazon Linux)
       user        = "ubuntu"
       # Caminho para a chave privada usada para autenticação SSH
-      private_key = file("../myssh.pem")
+      private_key = file("/home/eduardo/Documents/Eduardo/Faculdade/Codeup/Terraform/compute/ec2/myssh.pem")
       # Endereço IP público da instância EC2
       host        = aws_instance.ec2_publica_tf.public_ip
     }
