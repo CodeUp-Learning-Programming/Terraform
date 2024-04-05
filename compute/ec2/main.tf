@@ -58,19 +58,29 @@ resource "aws_instance" "ec2_publica_tf" {
 
   # Transferir a chave privada para a instância EC2 pública
   # Configurações da instância EC2...
-  #provisioner "file" {
-  #  source      = "/caminho/para/sua/chave.pem"
-  #  destination = "/caminho/na/instancia/onde/salvar/chave.pem"
-  #}
+  provisioner "file" {
+    source      = "./myssh.pem"
+    destination = "/home/ubuntu/chave.pem"
 
-  #provisioner "remote-exec" {
-  #  # Comandos para executar na instância EC2...
-  #}
+    connection {
+      # Tipo de conexão SSH
+      type        = "ssh"
+      # Usuário SSH para conectar à instância (padrão: ec2-user para instâncias Amazon Linux)
+      user        = "ubuntu"
+      # Caminho para a chave privada usada para autenticação SSH
+      private_key = file("./myssh.pem")
+      # Endereço IP público da instância EC2
+      host        = aws_instance.ec2_publica_tf.public_ip
+    }
+  }
 
   # Provisionador para executar comandos na instância EC2 remotamente
-  /* provisioner "remote-exec" {
+  provisioner "remote-exec" {
     # Comandos a serem executados na instância EC2
-    inline = [file("./shell/ec2-publica.sh")]
+    inline = [
+      file("./shell/ec2-publica.sh")
+      #TODO: Adicionar o script de instalação do Front-end
+      ]
 
     # Configuração de conexão SSH para se conectar à instância EC2
     connection {
@@ -83,18 +93,12 @@ resource "aws_instance" "ec2_publica_tf" {
       # Endereço IP público da instância EC2
       host        = aws_instance.ec2_publica_tf.public_ip
     }
-  } */
+  }
 
   tags = {
     Name = var.nome_ec2_publica
   }
 }
-#Pegando o IP publico da máquina para rodar um script apos sua criação
-
-
-#Rodando um script na minha máquina
-
-
 
 resource "aws_instance" "ec2_privada1_tf" {
   ami           = "ami-080e1f13689e07408"  
@@ -102,7 +106,35 @@ resource "aws_instance" "ec2_privada1_tf" {
   subnet_id = var.subnet_privada1_id
   vpc_security_group_ids = ["${aws_security_group.grupo_seguranca_padrao_tf.id}"]
   key_name = "myssh"  
-  associate_public_ip_address = false          
+  associate_public_ip_address = true
+
+  /*connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = file("./myssh.pem")
+    host        = self.private_ip
+    agent       = false
+    bastion_host {
+      host        = aws_instance.bastion_host.public_ip
+      user        = "ubuntu"
+      private_key = file("./myssh.pem")
+    }
+  }*/
+   connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = file("./myssh.pem")
+    host        = self.private_ip
+    agent       = false
+    bastion_host = aws_instance.ec2_publica_tf.public_ip
+  }         
+
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir deubom"
+      #TODO: Adicionar o script de instalação do back-end
+      ]
+  }
 
   tags = {
     Name = var.nome_ec2_privada1

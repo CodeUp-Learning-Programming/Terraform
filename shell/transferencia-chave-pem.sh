@@ -1,5 +1,4 @@
 # Obtém o endereço IP da instância EC2 como primeiro argumento
-instace_ip=$1
 
 # Agora você pode usar a variável instance_ip como necessário no seu script
 #echo "Tentando conexão IP $instace_ip"
