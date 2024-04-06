@@ -65,9 +65,15 @@ module "subnet"{
   nome_subnet_privada2  = "subnet_privada2_tf"
 }
 
+module "group_security" {
+  source = "./network/group_security"
+  vpc_id = module.vpc.id_vpc
+}
+
 module "ec2"{
   source = "./compute/ec2"
   vpc_id = module.vpc.id_vpc
+  grupo_seguranca_id = module.group_security.grupo_seguranca_id 
 
   #ECS Publica
   nome_ec2_publica = "ec2_publica_tf"
@@ -83,12 +89,4 @@ module "ec2"{
   nome_ec2_privada2 = "ec2_privada2_tf"
   tipo_instancia_ec2_privada2 = "t2.micro"
   subnet_privada2_id = module.subnet.subnet_privada2_id
-}
-
-resource "null_resource" "run_script" {
-  depends_on = [module.ec2]
-
-  provisioner "local-exec" {
-    command = "bash ./shell/transferencia-chave-pem.sh ${module.ec2.instance_ip}"
-  }
 }

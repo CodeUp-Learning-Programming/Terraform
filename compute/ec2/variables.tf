@@ -2,6 +2,10 @@ variable "vpc_id" {
   description = "ID da VPC"
 }
 
+variable "grupo_seguranca_id" {
+  description = "ID do GS"
+}
+
 #EC2 Publica
 variable "tipo_instancia_ec2_publica" {
   description = "Tipo instancia EC2 publica"

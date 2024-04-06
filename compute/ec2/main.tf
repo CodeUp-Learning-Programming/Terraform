@@ -1,58 +1,9 @@
-resource "aws_security_group" "grupo_seguranca_padrao_tf" {
-  name        = "grupo_seguranca_padrao_tf"
-  description = "Grupo de seguranca das EC2"
-  vpc_id      = var.vpc_id  # Substitua pelo ID da sua VPC
-
-  // Regras de entrada
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Acesso SSH de qualquer lugar
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Acesso HTTP de qualquer lugar
-  }
-
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Acesso MySQL de qualquer lugar
-  }
-
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Acesso HTTP de qualquer lugar
-  }
-
-  // Regras de saída
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"            # Todos os protocolos
-    cidr_blocks = ["0.0.0.0/0"]   # Permitir saída para qualquer lugar
-  }
-
-  tags = {
-    Name = "grupo_seguranca_padrao"
-  }
-}
-
-
-
 #EC2 Publica
 resource "aws_instance" "ec2_publica_tf" {
   ami           = "ami-080e1f13689e07408"  
   instance_type = var.tipo_instancia_ec2_publica 
   subnet_id = var.subnet_publica_id
-  vpc_security_group_ids = ["${aws_security_group.grupo_seguranca_padrao_tf.id}"]     
+  vpc_security_group_ids = [var.grupo_seguranca_id]     
   key_name = "myssh"
   associate_public_ip_address = true
 
@@ -70,7 +21,7 @@ resource "aws_instance" "ec2_publica_tf" {
       # Caminho para a chave privada usada para autenticação SSH
       private_key = file("./myssh.pem")
       # Endereço IP público da instância EC2
-      host        = aws_instance.ec2_publica_tf.public_ip
+      host        = self.public_ip
     }
   }
 
@@ -78,7 +29,7 @@ resource "aws_instance" "ec2_publica_tf" {
   provisioner "remote-exec" {
     # Comandos a serem executados na instância EC2
     inline = [
-      file("./shell/ec2-publica.sh")
+      file("./shell/instala-front.sh")
       #TODO: Adicionar o script de instalação do Front-end
       ]
 
@@ -91,7 +42,7 @@ resource "aws_instance" "ec2_publica_tf" {
       # Caminho para a chave privada usada para autenticação SSH
       private_key = file("./myssh.pem")
       # Endereço IP público da instância EC2
-      host        = aws_instance.ec2_publica_tf.public_ip
+      host        = self.public_ip
     }
   }
 
@@ -104,7 +55,7 @@ resource "aws_instance" "ec2_privada1_tf" {
   ami           = "ami-080e1f13689e07408"  
   instance_type = var.tipo_instancia_ec2_privada1
   subnet_id = var.subnet_privada1_id
-  vpc_security_group_ids = ["${aws_security_group.grupo_seguranca_padrao_tf.id}"]
+  vpc_security_group_ids = [var.grupo_seguranca_id]
   key_name = "myssh"  
   associate_public_ip_address = true
 
@@ -145,7 +96,7 @@ resource "aws_instance" "ec2_privada2_tf" {
   ami           = "ami-080e1f13689e07408"  
   instance_type = var.tipo_instancia_ec2_privada2
   subnet_id = var.subnet_privada2_id
-  vpc_security_group_ids = ["${aws_security_group.grupo_seguranca_padrao_tf.id}"] 
+  vpc_security_group_ids = [var.grupo_seguranca_id] 
   key_name = "myssh" 
   associate_public_ip_address = false        
 
