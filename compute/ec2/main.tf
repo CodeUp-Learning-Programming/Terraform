@@ -25,6 +25,22 @@ resource "aws_instance" "ec2_publica_tf" {
     }
   }
 
+  provisioner "file" {
+    source      = "./shell/dist.zip"
+    destination = "/home/ubuntu/chave.pem"
+
+    connection {
+      # Tipo de conexão SSH
+      type        = "ssh"
+      # Usuário SSH para conectar à instância (padrão: ec2-user para instâncias Amazon Linux)
+      user        = "ubuntu"
+      # Caminho para a chave privada usada para autenticação SSH
+      private_key = file("./myssh.pem")
+      # Endereço IP público da instância EC2
+      host        = self.public_ip
+    }
+  }
+
   # Provisionador para executar comandos na instância EC2 remotamente
   provisioner "remote-exec" {
     # Comandos a serem executados na instância EC2
