@@ -27,7 +27,23 @@ resource "aws_instance" "ec2_publica_tf" {
 
   provisioner "file" {
     source      = "./shell/dist.zip"
-    destination = "/home/ubuntu/chave.pem"
+    destination = "/home/ubuntu/dist.zip"
+
+    connection {
+      # Tipo de conexão SSH
+      type        = "ssh"
+      # Usuário SSH para conectar à instância (padrão: ec2-user para instâncias Amazon Linux)
+      user        = "ubuntu"
+      # Caminho para a chave privada usada para autenticação SSH
+      private_key = file("./myssh.pem")
+      # Endereço IP público da instância EC2
+      host        = self.public_ip
+    }
+  }
+
+  provisioner "file" {
+    source      = "./shell/meu_site.conf"
+    destination = "/home/ubuntu/meu_site.conf"
 
     connection {
       # Tipo de conexão SSH
@@ -98,8 +114,7 @@ resource "aws_instance" "ec2_privada1_tf" {
 
   provisioner "remote-exec" {
     inline = [
-      "mkdir deubom"
-      #TODO: Adicionar o script de instalação do back-end
+      file("./shell/instala-back.sh")
       ]
   }
 
