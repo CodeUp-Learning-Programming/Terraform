@@ -1,12 +1,9 @@
 #Atualiza os pacotes
-sudo apt update -y
-
+sudo apt update
 #Instala o NGINX
-sudo apt install nginx -y
-
+sudo apt install nginx
 #Instalando o unzip
 sudo apt install unzip
-
 #Colocando nosso site no nginx
 unzip dist.zip
 cd dist
