@@ -20,6 +20,20 @@ resource "aws_route_table_association" "associacao_rt_publica" {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #Route table privada
 resource "aws_route_table" "rt_privada_tf" {
   vpc_id = var.vpc_id
@@ -27,6 +41,12 @@ resource "aws_route_table" "rt_privada_tf" {
   tags = {
     Name = var.nome_rt_privada
   }
+}
+
+resource "aws_route" "aws_nat_gateway_route_tf_privada1" {
+  route_table_id = aws_route_table.rt_privada_tf.id
+  destination_cidr_block =   "0.0.0.0/0"
+  nat_gateway_id = var.nat_gateway_id
 }
 
 #Associando a Rota de tabela a subnet privada #Fazer

@@ -1,3 +1,12 @@
+# IP elástico para o NAT Gateway
+resource "aws_eip" "eip-tf" {
+  vpc = true
+  tags = {
+    Name = var.nome_eip
+  }
+}
+
+
 #NAT Gateway
 resource "aws_nat_gateway" "nat_01_tf" {
   allocation_id = aws_eip.eip-tf.id
@@ -9,9 +18,3 @@ resource "aws_nat_gateway" "nat_01_tf" {
   }
 }
 
-# IP elástico para o NAT Gateway
-resource "aws_eip" "eip-tf" {
-  tags = {
-    Name = var.nome_eip
-  }
-}

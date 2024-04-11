@@ -22,3 +22,8 @@ variable "nome_rt_publica" {
 variable "nome_rt_privada" {
   description = "Nome da route table privada"  
 }
+
+variable "nat_gateway_id" {
+  description = "Id do NatGateway"
+}
+
