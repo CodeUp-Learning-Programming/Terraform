@@ -42,6 +42,7 @@ module "route_table" {
   igw_id             = module.internet_gateway.igw_id
   subnet_publica_id  = module.subnet.subnet_publica_id
   subnet_privada1_id = module.subnet.subnet_privada1_id
+  subnet_privada2_id = module.subnet.subnet_privada2_id
 
   nome_rt_publica = "rt_publica_tf"
   nome_rt_privada = "rt_privada_tf"

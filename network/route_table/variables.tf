@@ -12,7 +12,11 @@ variable "subnet_publica_id" {
 }
 
 variable "subnet_privada1_id" {
-  description = "ID da subnet privada"
+  description = "ID da subnet privada1"
+}
+
+variable "subnet_privada2_id" {
+  description = "ID da subnet privada2"
 }
 
 variable "nome_rt_publica" {

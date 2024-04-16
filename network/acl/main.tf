@@ -64,7 +64,7 @@ resource "aws_network_acl_association" "association_subnet_publica" {
   network_acl_id     = aws_network_acl.acl_publica_tf.id
 }
 
-resource "aws_network_acl" "acl_privada_tf" {
+/*resource "aws_network_acl" "acl_privada_tf" {
   vpc_id = var.vpc_id
 
   # Regra de entrada para HTTP (porta 80) da sub-rede privada
@@ -116,4 +116,4 @@ resource "aws_network_acl" "acl_privada_tf" {
 resource "aws_network_acl_association" "association_subnet_privada" {
   subnet_id          = var.subnet_privada_id
   network_acl_id     = aws_network_acl.acl_privada_tf.id
-}
+}*/

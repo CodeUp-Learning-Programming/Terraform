@@ -45,3 +45,5 @@ variable "nome_ec2_privada2" {
   description = "Nome da EC2 privada2"
 }
 
+
+
