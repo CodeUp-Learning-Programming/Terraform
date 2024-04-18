@@ -1,24 +1,3 @@
-/*resource "aws_eip" "eip_ec2_publica" {
-  instance = aws_instance.ec2_publica_tf.id
-  vpc      = true  # Este IP é para uma VPC, se estiver usando VPC
-  # Você pode especificar um IP elástico específico assim:
-  
-}
-
-resource "aws_eip" "eip_ec2_privada1" {
-  instance = aws_instance.ec2_privada1_tf.id
-  vpc      = true  # Este IP é para uma VPC, se estiver usando VPC
-  # Você pode especificar um IP elástico específico assim:
-  
-}
-
-resource "aws_eip" "eip_ec2_privada2" {
-  instance = aws_instance.ec2_privada2_tf.id
-  vpc      = true  # Este IP é para uma VPC, se estiver usando VPC
-  # Você pode especificar um IP elástico específico assim:
-  
-}*/
-
 #EC2 Publica
 resource "aws_instance" "ec2_publica_tf" {
   ami           = "ami-080e1f13689e07408"  
